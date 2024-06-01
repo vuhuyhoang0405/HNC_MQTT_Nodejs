@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Light Control</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>MQTT Light Control</h1>
+    <button id="turnOnButton">Turn On Light</button>
+    <button id="turnOffButton">Turn Off Light</button>
+
+    <div id="mqttData">
+        <h2>MQTT Data</h2>
+        <p id="terminalTime"></p>
+        <p id="groupName"></p>
+        <p id="internalVariable"></p>
+    </div>
+
+    <script>
+        const turnOnButton = document.getElementById('turnOnButton');
+        const turnOffButton = document.getElementById('turnOffButton');
+
+        turnOnButton.addEventListener('click', () => {
+            fetch('/turn-on-light', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        turnOffButton.addEventListener('click', () => {
+            fetch('/turn-off-light', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        // Hàm để lấy và hiển thị dữ liệu từ server
+        function fetchMqttData() {
+            fetch('/mqtt-data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('terminalTime').innerText = 'Terminal Time: ' + (data._terminalTime || 'N/A');
+                    document.getElementById('groupName').innerText = 'Group Name: ' + (data._groupName || 'N/A');
+                    document.getElementById('internalVariable').innerText = 'Internal Variable: ' + (data.InternalVariable_1_W0 || 'N/A');
+                })
+                .catch(error => {
+                    console.error('Error fetching MQTT data:', error);
+                });
+        }
+
+        // Lấy dữ liệu mỗi 5 giây
+        setInterval(fetchMqttData, 5000);
+    </script>
+</body>
+</html>

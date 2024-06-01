@@ -1,0 +1,17 @@
+{
+  "name": "testmqtt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx pm2 start index.js --watch",
+    "stop": "npx pm2 stop index.js --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mqtt": "^5.7.0"
+  }
+}
